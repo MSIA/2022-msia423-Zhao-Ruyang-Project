@@ -16,24 +16,32 @@
 
 ### Vision
 
-The price of flight tickets differs a lot based on the departure/destination cities, seat classes and airlines, etc. Moreover, the price of the same flight fluctuates a lot as it approaches the departure date.   
-As a result, figuring out what is the best time to purchase a flight ticket can be a confusing task for customers who want to minimize their cost. The intial idea of developing this app comes from the intention to help the customers with a tight budget to reduce the cost of flight tickets by purchasing smartly.
+The price of flight tickets differs a lot based on the 
+departure/destination cities, seat classes and airlines, etc. 
+Moreover, the price of the same flight fluctuates a lot as it 
+approaches the departure date.   
+As a result, figuring out what is the best time to purchase a 
+flight ticket can be a confusing task for customers who want 
+to minimize their cost. The initial idea of developing this app 
+comes from the intention to help the customers with a tight 
+budget to reduce the cost of flight tickets by purchasing smartly.
 
 ### Mission
 
-The users would be able to input flight informations including departure/destination cities, seat classes, airlines, departure time and days left before departure. The app could predict the price of the flight tickets based on the information given.  
+The users would be able to input flight information including departure/destination cities, seat classes, airlines, departure time and days left before departure. The app could predict the price of the flight tickets based on the information given.  
 Alternatively, the app could also plot the predicted flight fare over the number of days left before departure. The ultimate goal is to enable the users to plan ahead and pick the day with the lowest fare to purchase flight tickets.  
-The training data come from kaggle https://www.kaggle.com/datasets/promptcloud/easemytrip-flight-fare-travel-listings
-
+The training data is from kaggle, and contains flight information, timestamp, and the fare at the time of parsing. The data can be accessed at https://www.kaggle.com/datasets/promptcloud/easemytrip-flight-fare-travel-listings. 
 
 ### Success criteria
+There are two success criteria for assessment: the prediction performance of the machine learning model, and the engagement and retention metric of the users.  
+#### Machine learning performance metric
+To evaluate the performance of the model, MAPE (Mean Absolute Percentage Error) is used, and the initial goal is to have MAPE below 10%.  
 
-Two success criteria are assessed: the prediction performance of the model, and the engagement and retention metric of the users.  
-To evaluate the performance of the model, MAPE(Mean Absolute Percentage Error) is used, and the initial goal is to have MAPE below 10%.  
-To understand how the app is appealing to the users, several metrics are used to measure users' engagement and retention:
+#### Business metric
+To understand how appealing the app is to the users, several metrics are used to measure users' engagement and retention:
 1. Number of predictions per user per month
 2. Average time spent on the app
-3. Month one rention of the users, i.e. percentage of users who remain active one month after they sign up
+3. Month one retention of the users, i.e. percentage of users who remain active one month after they sign up
 
 The app could be considered successful if month one retention surpass 50%, and average number of predictions per month is over 1 for each user.
 
