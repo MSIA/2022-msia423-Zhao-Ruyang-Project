@@ -1,7 +1,7 @@
 # MSiA423 Template Repository
 
 # Table of Contents
-* [Directory structure ](#Directory-structure)
+* [Project charter ](#Project-charter)
 * [Running the app ](#Running-the-app)
 	* [1. Initialize the database ](#1.-Initialize-the-database)
 	* [2. Configure Flask app ](#2.-Configure-Flask-app)
@@ -12,7 +12,31 @@
 
 
 
-## Directory structure 
+## Project charter
+
+### Vision
+
+The price of flight tickets differs a lot based on the departure/destination cities, seat classes and airlines, etc. Moreover, the price of the same flight fluctuates a lot as it approaches the departure date. As a result, figuring out what is the best time to purchase a flight ticket can be a confusing task for customers who want to minimize their cost. The goal of this app is to help the customers to predict the price of a flight ticket so that they could purchase the tickets at the lowest possible price.
+
+
+### Mission
+
+The user will input flight informations including departure/destination cities, seat classes, airlines, departure time and days left before departure. The app could predict the price of the flight ticket based on the information given.
+Alternatively, the app could also plot the predicted flight fare over the number of days left before departure. The ultimate goal is to enable the users to plan ahead and pick the day with the lowest fare to purchase flight tickets.
+The training data come from kaggle https://www.kaggle.com/datasets/promptcloud/easemytrip-flight-fare-travel-listings
+
+
+### Success criteria
+
+Two success criteria are assessed: the prediction performance of the model, and the engagement and retention metric of the users.
+To evaluate the performance of the model, MAPE(Mean Absolute Percentage Error) is used, and the initial goal is to have MAPE below 10%.
+To understand how the app is appealing to the users, several metrics are used to measure users' engagement and retention:
+1. Number of predictions per user per month
+2. Average time spent on the app
+3. Month one rention of the users, i.e. percentage of users who remain active one month after they sign up
+
+The app could be considered successful if month one retention surpass 50%, and average number of predictions per month is over 1 for each user.
+
 
 ```
 ├── README.md                         <- You are here
