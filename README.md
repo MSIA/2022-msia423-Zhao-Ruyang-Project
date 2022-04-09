@@ -16,12 +16,12 @@
 
 ### Vision
 
-The price of flight tickets differs a lot based on the departure/destination cities, seat classes and airlines, etc. Moreover, the price of the same flight fluctuates a lot as it approaches the departure date. As a result, figuring out what is the best time to purchase a flight ticket can be a confusing task for customers who want to minimize their cost. The goal of this app is to help the customers to predict the price of a flight ticket so that they could purchase the tickets at the lowest possible price.
-
+The price of flight tickets differs a lot based on the departure/destination cities, seat classes and airlines, etc. Moreover, the price of the same flight fluctuates a lot as it approaches the departure date.   
+As a result, figuring out what is the best time to purchase a flight ticket can be a confusing task for customers who want to minimize their cost. The intial idea of developing this app comes from the intention to help the customers with a tight budget to reduce the cost of flight tickets by purchasing smartly.
 
 ### Mission
 
-The user will input flight informations including departure/destination cities, seat classes, airlines, departure time and days left before departure. The app could predict the price of the flight ticket based on the information given.  
+The users would be able to input flight informations including departure/destination cities, seat classes, airlines, departure time and days left before departure. The app could predict the price of the flight tickets based on the information given.  
 Alternatively, the app could also plot the predicted flight fare over the number of days left before departure. The ultimate goal is to enable the users to plan ahead and pick the day with the lowest fare to purchase flight tickets.  
 The training data come from kaggle https://www.kaggle.com/datasets/promptcloud/easemytrip-flight-fare-travel-listings
 
