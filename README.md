@@ -22,6 +22,7 @@ The price of flight tickets differs a lot based on the departure/destination cit
 ### Mission
 
 The user will input flight informations including departure/destination cities, seat classes, airlines, departure time and days left before departure. The app could predict the price of the flight ticket based on the information given.
+
 Alternatively, the app could also plot the predicted flight fare over the number of days left before departure. The ultimate goal is to enable the users to plan ahead and pick the day with the lowest fare to purchase flight tickets.
 The training data come from kaggle https://www.kaggle.com/datasets/promptcloud/easemytrip-flight-fare-travel-listings
 
