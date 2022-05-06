@@ -7,7 +7,7 @@ import logging.config
 logging.config.fileConfig('./config/logging/local.conf')
 logger = logging.getLogger('data_upload.py')
 
-# s3 = boto3.resource('s3')
+s3 = boto3.resource('s3')
 # # Get all the bucket names
 # buckets = [bucket.name for bucket in s3.buckets.all()]
 
