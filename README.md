@@ -91,6 +91,9 @@ The app could be considered successful if month one retention surpass 50%, and a
 ├── requirements.txt                  <- Python package dependencies 
 ```
 
+Q: Organizations of rds and s3, where to put credentials ENV?,
+using raw sql queries.
+
 ## Running the app 
 
 ### 1. Initialize the database 
