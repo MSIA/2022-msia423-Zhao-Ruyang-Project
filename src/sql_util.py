@@ -1,15 +1,11 @@
 """Creates, ingests data into, and enables querying of a table of
  songs for the PennyLane app to query from and display results to the user."""
 # mypy: plugins = sqlmypy, plugins = flasksqlamypy
-import argparse
 import logging.config
-import sqlite3
 import typing
 
-import flask
 import sqlalchemy
 import sqlalchemy.orm
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
 
 logger = logging.getLogger(__name__)
@@ -43,6 +39,7 @@ class FlightRecords(Base):
 
     def __repr__(self):
         return f'<Flight {self.flight_number} {self.days_left}>'
+
 
 def create_db(engine_string: str) -> None:
     """Create database with Tracks() data model from provided engine string.
