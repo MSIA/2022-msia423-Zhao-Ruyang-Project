@@ -14,12 +14,12 @@
     <table cellspacing="15">
          <thead>
             <tr>
-               <th>Fligh_Operator</th>
-               <th>Departure_Date</th>
+               <th>Airline</th>
                <th>Departure_Time</th>
                <th>Source_City</th>
                <th>Destination</th>
                <th>#_Stops</th>
+               <th>Flight_class</th>
                <th>Duration</th>
                <th>Days_Left</th>
                <th>Current_Price</th>
@@ -43,15 +43,15 @@
 
       <form action="{{ url_for('add_record') }}" method=post class=add-record>
       <dl>
-        <input type=text size=15 name=title placeholder="Flight Operator">
-        <input type=text size=15 name=artist placeholder="Departure Date">
-        <input type=text size=15 name=album placeholder="Departure Time">
-        <input type=text size=15 name=title placeholder="Source City">
-        <input type=text size=15 name=artist placeholder="Destination">
-        <input type=text size=15 name=album placeholder="# Stops">
-        <input type=text size=15 name=title placeholder="Duration">
-        <input type=text size=15 name=album placeholder="Days Left">
-        <input type=text size=15 name=album placeholder="Current Price">
+        <input type=text size=15 name=airline placeholder="Airline">
+        <input type=text size=15 name=depart_time placeholder="Departure Time">
+        <input type=text size=15 name=source placeholder="Source City">
+        <input type=text size=15 name=destination placeholder="Destination">
+        <input type=text size=15 name=stops placeholder="# Stops">
+        <input type=text size=15 name=flight_class placeholder="Flight Class">
+        <input type=text size=15 name=duration placeholder="Duration">
+        <input type=text size=15 name=days_left placeholder="Days Left">
+        <input type=text size=15 name=cur_price placeholder="Current Price">
         <input type=submit value=Predict>
       </dl>
     </form>
