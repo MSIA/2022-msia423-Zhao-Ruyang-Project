@@ -13,5 +13,5 @@ if SQLALCHEMY_DATABASE_URI is None:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///data/tracks.db'
 
 # Data path
-LOCAL_DATA_PATH = "data/raw/flights_fares_data.csv"
-S3_DATA_PATH = "s3://2022-msia423-zhao-ruyang/raw/flights_fares_data.csv"
+LOCAL_DATA_PATH = "data/raw/flight_data.csv"
+S3_DATA_PATH = "s3://2022-msia423-zhao-ruyang/raw/flight_data.csv"
