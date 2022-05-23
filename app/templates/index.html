@@ -7,35 +7,52 @@
 
 <body>
     <h3>
-         <a href = "{{ url_for('index') }}">Penny Lane Music Recommender</a>
+         <a href = "{{ url_for('index') }}">Flight Ticket Price Prediction</a>
     </h3>
 
     <hr/>
-    <table>
+    <table cellspacing="15">
          <thead>
             <tr>
-               <th>Title</th>
-               <th>Artist</th>
-               <th>Album</th>
+               <th>Fligh_Operator</th>
+               <th>Departure_Date</th>
+               <th>Departure_Time</th>
+               <th>Source_City</th>
+               <th>Destination</th>
+               <th>#_Stops</th>
+               <th>Duration</th>
+               <th>Days_Left</th>
+               <th>Current_Price</th>
             </tr>
          </thead>
 
          <tbody>
-            {% for track in tracks %}
-               <tr>
-                   <td>{{ track.title }}</td>
-                   <td>{{ track.artist }}</td>
-                   <td>{{ track.album }}</td>
-               </tr>
-            {% endfor %}
+            <tr>
+               <td>SpiceJet</td>
+               <td>2020-04-23</td>
+               <td>13:10</td>
+               <td>Delhi</td>
+               <td>Guwahati</td>
+               <td>4</td>
+               <td>08h50m</td>
+               <td>5</td>
+               <td>4378</td>
+           </tr>
          </tbody>
       </table>
-      <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+
+      <form action="{{ url_for('add_record') }}" method=post class=add-record>
       <dl>
-        <input type=text size=15 name=title placeholder="Title">
-        <input type=text size=15 name=artist placeholder="Artist">
-        <input type=text size=15 name=album placeholder="Album">
-        <input type=submit value=Add>
+        <input type=text size=15 name=title placeholder="Flight Operator">
+        <input type=text size=15 name=artist placeholder="Departure Date">
+        <input type=text size=15 name=album placeholder="Departure Time">
+        <input type=text size=15 name=title placeholder="Source City">
+        <input type=text size=15 name=artist placeholder="Destination">
+        <input type=text size=15 name=album placeholder="# Stops">
+        <input type=text size=15 name=title placeholder="Duration">
+        <input type=text size=15 name=album placeholder="Days Left">
+        <input type=text size=15 name=album placeholder="Current Price">
+        <input type=submit value=Predict>
       </dl>
     </form>
 

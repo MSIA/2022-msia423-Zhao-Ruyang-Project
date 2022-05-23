@@ -250,7 +250,7 @@ To allow for quick iteration, mount your entire repo so changes in Python files 
 To run mypy for a single file, run: 
 
 ```bash
- docker run pennymypy run.py
+ docker run pennymypy ex_run.py
 ```
 
 ## Pylint
@@ -264,7 +264,7 @@ Run the following:
 To run pylint for a file, run:
 
 ```bash
- docker run pennylint run.py 
+ docker run pennylint ex_run.py 
 ```
 
 (or any other file name, with its path relative to where you are executing the command from)
@@ -273,5 +273,5 @@ To allow for quick iteration, mount your entire repo so changes in Python files 
 
 
 ```bash
- docker run --mount type=bind,source="$(pwd)"/,target=/app/ pennylint run.py
+ docker run --mount type=bind,source="$(pwd)"/,target=/app/ pennylint ex_run.py
 ```

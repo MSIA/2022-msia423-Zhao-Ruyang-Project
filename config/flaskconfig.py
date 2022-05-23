@@ -1,8 +1,8 @@
 import os
 DEBUG = True
 LOGGING_CONFIG = "config/logging/local.conf"
-PORT = 5000
-APP_NAME = "penny-lane"
+PORT = 5001
+APP_NAME = "flight-price-prediction"
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 HOST = "0.0.0.0"
 SQLALCHEMY_ECHO = False  # If true, SQL for queries made will be printed
