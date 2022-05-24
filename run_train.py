@@ -1,4 +1,5 @@
 import pandas as pd
+import logging.config
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_absolute_percentage_error
@@ -8,7 +9,11 @@ from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 import joblib
 
-from config.model_config import CLEANED_DATA_PATH
+from src.model_util import save_model
+from config.model_config import CLEANED_DATA_PATH, MODEL_PATH
+
+logging.config.fileConfig('config/logging/local.conf')
+logger = logging.getLogger('train_model')
 
 df = pd.read_csv(CLEANED_DATA_PATH)
 data = pd.get_dummies(df)
@@ -23,6 +28,9 @@ rm = RandomForestRegressor(n_estimators=300, random_state=123, n_jobs=-1, oob_sc
 rm.fit(X_train, y_train)
 
 # Output the evaluation metrics of the predictions on the validation set
-print("MSE", mean_squared_error(y_test, rm.predict(X_test)))
-print("MAE", mean_absolute_error(y_test, rm.predict(X_test)))
-print("MAPE", mean_absolute_percentage_error(y_test, rm.predict(X_test)))
+logger.info('MSE: %s', mean_squared_error(y_test, rm.predict(X_test)))
+logger.info('MAE: %s', mean_absolute_error(y_test, rm.predict(X_test)))
+logger.info('MAPE: %s', mean_absolute_percentage_error(y_test, rm.predict(X_test)))
+
+#Save the model
+save_model(rm, MODEL_PATH)
