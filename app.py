@@ -30,9 +30,9 @@ logger.debug(
     , app.config["PORT"])
 
 # Initialize the database session
-# record_manager = RecordManager(app)
-
-
+record_manager = RecordManager(app)
+# record_manager = RecordManager(app.config["SQLALCHEMY_DATABASE_URI"])
+print(app.config["SQLALCHEMY_DATABASE_URI"])
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -40,11 +40,21 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add_record():
-    """View that process a POST with new song input
+    """View that process a POST with new user input
 
     Returns:
         redirect to index page
     """
+    record_manager.add_user(airline=request.form['airline'],
+                            depart_time=request.form['depart_time'],
+                            source=request.form['source'],
+                            destination=request.form['destination'],
+                            stops=request.form['stops'],
+                            flight_class=request.form['flight_class'],
+                            duration=request.form['duration'],
+                            days_left=request.form['days_left'],
+                            cur_price=request.form['cur_price'])
+    logger.info('New user record added.')
     return redirect(url_for('index'))
 if __name__ == '__main__':
     app.run(debug=app.config["DEBUG"], port=app.config["PORT"],
