@@ -2,7 +2,7 @@ import logging.config
 
 import pandas as pd
 
-from config.model_config import LOCAL_DATA_PATH, CLEANED_DATA_PATH
+from config.model_config import LOCAL_DATA_PATH, CLEANED_DATA_PATH, COLUMN_TO_DROP, COLUMN_TO_MODIFY
 from src.preprocess_util import save_data, convert_column
 
 logging.config.fileConfig('config/logging/local.conf')
@@ -26,7 +26,9 @@ stop_map = {
     'one': 1,
     'two_or_more': 2
 }
-processed_df = convert_column(df, 'stops', stop_map)
+
+processed_df = convert_column(df, COLUMN_TO_MODIFY, stop_map)
+processed_df = processed_df.drop(COLUMN_TO_DROP, axis=1)
 
 try:
     save_data(processed_df, CLEANED_DATA_PATH)
