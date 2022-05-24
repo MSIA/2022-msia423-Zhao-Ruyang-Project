@@ -8,6 +8,7 @@ import flask
 import sqlalchemy
 import sqlalchemy.orm
 from sqlalchemy.ext.declarative import declarative_base
+from flask_sqlalchemy import SQLAlchemy
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ class UserRecords(Base):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
     airline = sqlalchemy.Column(sqlalchemy.String(100), unique=False,
                                 nullable=True)
-    departure_time = sqlalchemy.Column(sqlalchemy.Time, unique=False,
+    departure_time = sqlalchemy.Column(sqlalchemy.String(100), unique=False,
                                        nullable=False)
     source_city = sqlalchemy.Column(sqlalchemy.String(100), unique=False,
                                     nullable=True)
@@ -133,6 +134,8 @@ class RecordManager:
         session.add(user_record)
         session.commit()
         logger.info(f'One user record with price {cur_price} added to database.')
+        out = session.query(UserRecords).all()
+        logger.info(out)
 
 
 def create_db(engine_string: str) -> None:
