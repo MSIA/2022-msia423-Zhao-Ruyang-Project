@@ -1,38 +1,28 @@
 import logging.config
 
 import pandas as pd
+import yaml
 
-from config.model_config import LOCAL_DATA_PATH, CLEANED_DATA_PATH, COLUMN_TO_DROP, COLUMN_TO_MODIFY
-from src.preprocess_util import save_data, convert_column
+from src.preprocess_util import process_and_save
 
 logging.config.fileConfig('config/logging/local.conf')
 logger = logging.getLogger('preprocess')
 
 # Preprocess the data
+with open('config/model_config.yaml', "r") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
 # Read in the data frame
+preprocess_config = config['preprocess']
+read_path = preprocess_config['read_path']
+process_param = preprocess_config['process_param']
 try:
-    df = pd.read_csv(LOCAL_DATA_PATH, index_col=0)
+    df = pd.read_csv(read_path, index_col=0)
 except FileNotFoundError as e:
-    logger.error('Could not find data in %s', LOCAL_DATA_PATH)
+    logger.error('Could not find data in %s', read_path)
     raise e
 except Exception as e:
     logger.error('Failed to load data.')
     logger.error(e)
     raise e
 
-# Define the lookup_map to process the 'stops' column
-stop_map = {
-    'zero': 0,
-    'one': 1,
-    'two_or_more': 2
-}
-
-processed_df = convert_column(df, COLUMN_TO_MODIFY, stop_map)
-processed_df = processed_df.drop(COLUMN_TO_DROP, axis=1)
-
-try:
-    save_data(processed_df, CLEANED_DATA_PATH)
-except OSError as e:
-    logger.error('Path `%s` does not exist.', CLEANED_DATA_PATH)
-else:
-    logger.info('Cleaned dataframe saved to %s', CLEANED_DATA_PATH)
+process_and_save(df, **process_param)

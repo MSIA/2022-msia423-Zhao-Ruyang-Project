@@ -1,0 +1,22 @@
+preprocess:
+  read_path: 'data/raw/flight_data.csv'
+  process_param:
+    column_to_modify: 'stops'
+    column_to_drop: ["flight", "arrival_time"]
+    lookup_map:
+      zero: 0
+      one: 1
+      two_or_more: 2
+    save_path: 'data/clean/clean_data.csv'
+
+split_data:
+  read_path: 'data/clean/clean_data.csv'
+  target_name: 'price'
+  test_size: 0.1
+  train_path: 'data/train'
+  test_path: 'data/test'
+
+train:
+  X_train_path: 'data/train/X_train.csv'
+  y_train_path: 'data/train/y_train.csv'
+  save_path: 'models/model.joblib'

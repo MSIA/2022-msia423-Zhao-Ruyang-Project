@@ -7,30 +7,31 @@ from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.metrics import mean_squared_error
 # from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
-import joblib
 
-from src.model_util import save_model
+import yaml
+
+
 from config.model_config import CLEANED_DATA_PATH, MODEL_PATH
+
+from src.model_util import split_save, train_and_save
 
 logging.config.fileConfig('config/logging/local.conf')
 logger = logging.getLogger('train_model')
 
-df = pd.read_csv(CLEANED_DATA_PATH)
-data = pd.get_dummies(df)
+# Preprocess the data
+with open('config/model_config.yaml', "r") as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
 
+split_config = config['split_data']
+train_config = config['train']
 
-X = data.drop('price', axis=1)
-y = data['price']
+split_save(**split_config)
 
-# Train test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=123)
-rm = RandomForestRegressor(n_estimators=300, random_state=123, n_jobs=-1, oob_score=True)
-rm.fit(X_train, y_train)
+rm = RandomForestRegressor(n_estimators=30, random_state=123, n_jobs=-1)
+train_and_save(rm, **train_config)
 
-# Output the evaluation metrics of the predictions on the validation set
-logger.info('MSE: %s', mean_squared_error(y_test, rm.predict(X_test)))
-logger.info('MAE: %s', mean_absolute_error(y_test, rm.predict(X_test)))
-logger.info('MAPE: %s', mean_absolute_percentage_error(y_test, rm.predict(X_test)))
+# # Output the evaluation metrics of the predictions on the validation set
+# logger.info('MSE: %s', mean_squared_error(y_test, rm.predict(X_test)))
+# logger.info('MAE: %s', mean_absolute_error(y_test, rm.predict(X_test)))
+# logger.info('MAPE: %s', mean_absolute_percentage_error(y_test, rm.predict(X_test)))
 
-#Save the model
-save_model(rm, MODEL_PATH)
