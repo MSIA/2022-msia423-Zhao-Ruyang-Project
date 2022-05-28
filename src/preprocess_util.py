@@ -37,21 +37,4 @@ def process_and_save(df: pd.DataFrame,
                      save_path: str) -> None:
     processed_df = convert_column(df, column_to_modify, lookup_map)
     processed_df = processed_df.drop(column_to_drop, axis=1)
-    processed_df = pd.get_dummies(processed_df)
-    processed_df.to_csv(save_path)
-
-#
-# def save_data(df: pd.DataFrame, path: str) -> None:
-#     """Save the data into a specified path
-#
-#     Args:
-#         df (:obj: `pandas.DataFrame`): a provided dataframe to be saved
-#         path (`str`): path to save data
-#     """
-#     try:
-#         df.to_csv(path, index=False)
-#     except OSError as e:
-#         logger.error('Path `%s` does not exist.', path)
-#         raise e
-#     else:
-#         logger.info('Data successfully saved to %s', path)
+    processed_df.to_csv(save_path, index=False)

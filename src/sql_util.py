@@ -138,6 +138,8 @@ class RecordManager:
         logger.info(out)
 
 
+
+
 def create_db(engine_string: str) -> None:
     """Create database with Tracks() data model from provided engine string.
 

@@ -2,8 +2,11 @@ import logging.config
 import sqlite3
 import traceback
 
+import joblib
+import numpy as np
 import sqlalchemy.exc
 from flask import Flask, render_template, request, redirect, url_for
+from src.app_util import count_down
 
 # For setting up the Flask-SQLAlchemy database session
 # from src.ex_add_songs import Tracks, TrackManager
@@ -31,7 +34,11 @@ logger.debug(
 
 # Initialize the database session
 record_manager = RecordManager(app)
+
 # record_manager = RecordManager(app.config["SQLALCHEMY_DATABASE_URI"])
+encoder = joblib.load('models/encoder.joblib')
+model = joblib.load('models/model.joblib')
+
 print(app.config["SQLALCHEMY_DATABASE_URI"])
 @app.route('/')
 def index():
@@ -45,17 +52,35 @@ def add_record():
     Returns:
         redirect to index page
     """
-    record_manager.add_user(airline=request.form['airline'],
-                            depart_time=request.form['depart_time'],
-                            source=request.form['source'],
-                            destination=request.form['destination'],
-                            stops=request.form['stops'],
-                            flight_class=request.form['flight_class'],
-                            duration=request.form['duration'],
-                            days_left=request.form['days_left'],
-                            cur_price=request.form['cur_price'])
+    airline = request.form['airline']
+    source = request.form['source']
+    depart_time = request.form['depart_time']
+    stops = request.form['stops']
+    destination = request.form['destination']
+    flight_class = request.form['flight_class']
+    duration = request.form['duration']
+    days_left = request.form['days_left']
+    cur_price = request.form['cur_price']
+    model_input = [airline, source, 'Evening', stops, destination, flight_class, duration, days_left]
+    record_manager.add_user(airline=airline,
+                            source=source,
+                            depart_time=depart_time,
+                            stops=stops,
+                            destination=destination,
+                            flight_class=flight_class,
+                            duration=duration,
+                            days_left=days_left,
+                            cur_price=cur_price)
+    print(model_input)
+    model_input = count_down(model_input)
+    input = encoder.transform(model_input).astype('float')
+    output = model.predict(input)
+    print(output)
     logger.info('New user record added.')
     return redirect(url_for('index'))
+
+
+
 if __name__ == '__main__':
     app.run(debug=app.config["DEBUG"], port=app.config["PORT"],
             host=app.config["HOST"])
