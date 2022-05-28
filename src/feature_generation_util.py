@@ -15,7 +15,7 @@ def extract_features(read_path: str, save_path: str, target_name: str, feature_n
     target_path = save_path + '/target.npy'
     features_path = save_path + '/features.csv'
     np.save(target_path, target)
-    features.to_csv(features_path)
+    features.to_csv(features_path, index=False)
 
 
 def encode_and_save(read_path: str,

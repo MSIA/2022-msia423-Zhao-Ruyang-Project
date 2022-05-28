@@ -3,12 +3,14 @@
 # mypy: plugins = sqlmypy, plugins = flasksqlamypy
 import logging.config
 import typing
-
+from random import randint
 import flask
 import sqlalchemy
 import sqlalchemy.orm
 from sqlalchemy.ext.declarative import declarative_base
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import select
+
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +96,23 @@ class RecordManager:
         """
         self.session.close()
 
+    def get_ids(self):
+        """Get all primary keys of the user_record table"""
+        session = self.session
+        result = session.execute(select(UserRecords.id)).fetchall()
+        ids = [row[0] for row in result]
+        return ids
+
+    def unique_id(self):
+        """Generate an id that does not exist in the user_record table"""
+        existing_ids = self.get_ids()
+        record_id = randint(1, 10000)
+        while record_id in existing_ids:
+            record_id = randint(1, 10000)
+        return record_id
+
     def add_user(self,
+                 id: int,
                  airline: str,
                  depart_time: str,
                  source: str,
@@ -108,6 +126,7 @@ class RecordManager:
         """Adds user record to the user_record table.
 
         Args:
+            id (int): primary key in the table
             airline (str): airline name
             depart_time (str): time of departure
             source (str): departure city name
@@ -122,7 +141,8 @@ class RecordManager:
         """
 
         session = self.session
-        user_record = UserRecords(airline=airline,
+        user_record = UserRecords(id=id,
+                                  airline=airline,
                                   departure_time=depart_time,
                                   source_city=source,
                                   destination=destination,
@@ -137,8 +157,32 @@ class RecordManager:
         out = session.query(UserRecords).all()
         logger.info(out)
 
+    def add_output(self,
+                   id: int,
+                   record_id: int,
+                   days_left: int,
+                   price: int):
 
+        session = self.session
+        model_output = ModelOutputs(record_id=record_id,
+                                    days_left=days_left,
+                                    price=price)
+        session.add(model_output)
+        session.commit()
+        logger.info('Model output added to database.')
 
+    def add_all_output(self,
+                       record_id: int,
+                       days_left: int,
+                       price_list: list):
+        session = self.session
+        for day in range(days_left):
+            model_output = ModelOutputs(record_id=record_id,
+                                        days_left=day,
+                                        price=price_list[day])
+            session.add(model_output)
+        session.commit()
+        logger.info('All model outputs added to database.')
 
 def create_db(engine_string: str) -> None:
     """Create database with Tracks() data model from provided engine string.
@@ -154,3 +198,13 @@ def create_db(engine_string: str) -> None:
 
     Base.metadata.create_all(engine)
     logger.info("Tables successfully created in the database.")
+
+if __name__ == '__main__':
+    # pass
+    engine_string = 'mysql+pymysql://rzx9163:AWS1998!@nw-msia423-rzx9163.ctarvegaqgdp.us-east-1.rds.amazonaws.com:3306/flight_db'
+    engine = sqlalchemy.create_engine(engine_string)
+    session_maker = sqlalchemy.orm.sessionmaker(bind=engine)
+    session = session_maker()
+    result = session.query(ModelOutputs).all()
+    for i in result:
+        print(i.record_id)

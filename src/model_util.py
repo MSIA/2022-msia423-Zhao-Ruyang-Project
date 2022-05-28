@@ -8,22 +8,23 @@ from sklearn.model_selection import train_test_split
 logger = logging.getLogger(__name__)
 
 
-def df_split(feature_path: str, target_path: str, test_size: float) -> list:
+def df_split(feature_path: str, target_path: str, test_size: float, random_state: int) -> list:
     features = np.load(feature_path, allow_pickle=True)
     target = np.load(target_path, allow_pickle=True)
     if test_size == 0:
         return features, None, target, None
     X_train, X_test, y_train, y_test = train_test_split(
-        features, target, test_size=test_size)
+        features, target, test_size=test_size, random_state=random_state)
     return X_train, X_test, y_train, y_test
 
 
 def split_save(feature_path: str,
                target_path: str,
                test_size: float,
+               random_state: int,
                train_path: str,
                test_path: str) -> None:
-    X_train, X_test, y_train, y_test = df_split(feature_path, target_path, test_size)
+    X_train, X_test, y_train, y_test = df_split(feature_path, target_path, test_size, random_state)
     X_train_path = train_path + '/X_train.npy'
     y_train_path = train_path + '/y_train.npy'
     X_test_path = test_path + '/X_test.npy'

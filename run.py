@@ -64,7 +64,6 @@ if __name__ == '__main__':
         else:
             logger.info('Successfully saved the cleaned data.')
 
-
     if args.step == 'generate_feature':
         try:
             extract_config = config['generate_feature']['extract_features']
@@ -97,6 +96,7 @@ if __name__ == '__main__':
         try:
             split_config = config['split_data']
             train_config = config['train']
+            model_param = config['model']
         except KeyError as e:
             logger.error('Key not found.')
             raise e
@@ -111,7 +111,7 @@ if __name__ == '__main__':
         else:
             logger.info('Successfully split the data into train and test.')
 
-        rm = RandomForestRegressor(n_estimators=30, random_state=123, n_jobs=-1)
+        rm = RandomForestRegressor(**model_param)
         try:
             train_and_save(rm, **train_config)
         except TypeError as e:

@@ -5,6 +5,7 @@ import traceback
 import joblib
 import numpy as np
 import sqlalchemy.exc
+
 from flask import Flask, render_template, request, redirect, url_for
 from src.app_util import count_down
 
@@ -45,8 +46,8 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/add', methods=['POST'])
-def add_record():
+@app.route('/predict', methods=['POST'])
+def predict_price():
     """View that process a POST with new user input
 
     Returns:
@@ -62,7 +63,9 @@ def add_record():
     days_left = request.form['days_left']
     cur_price = request.form['cur_price']
     model_input = [airline, source, 'Evening', stops, destination, flight_class, duration, days_left]
-    record_manager.add_user(airline=airline,
+    record_id = record_manager.unique_id()
+    record_manager.add_user(id=record_id,
+                            airline=airline,
                             source=source,
                             depart_time=depart_time,
                             stops=stops,
@@ -71,16 +74,16 @@ def add_record():
                             duration=duration,
                             days_left=days_left,
                             cur_price=cur_price)
-    print(model_input)
-    model_input = count_down(model_input)
-    input = encoder.transform(model_input).astype('float')
-    output = model.predict(input)
-    print(output)
     logger.info('New user record added.')
-    return redirect(url_for('index'))
+    model_input = count_down(model_input)
+    model_input = encoder.transform(model_input).astype('float')
+    output = model.predict(model_input)
+    record_manager.add_all_output(record_id, int(days_left), output)
 
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
     app.run(debug=app.config["DEBUG"], port=app.config["PORT"],
             host=app.config["HOST"])
+    # print

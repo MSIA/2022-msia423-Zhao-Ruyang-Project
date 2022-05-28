@@ -22,12 +22,17 @@ split_data:
   feature_path: 'data/clean/features.npy'
   target_path: 'data/clean/target.npy'
   test_size: 0.1
+  random_state: 123
   train_path: 'data/train'
   test_path: 'data/test'
 train:
   X_train_path: 'data/train/X_train.npy'
   y_train_path: 'data/train/y_train.npy'
   save_path: 'models/model.joblib'
+model:
+  n_estimators: 30
+  random_state: 123
+  n_jobs: -1
 score:
   model_path: 'models/model.joblib'
   X_test_path: 'data/test/X_test.npy'

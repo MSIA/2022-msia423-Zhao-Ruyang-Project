@@ -11,7 +11,7 @@
     </h3>
 
     <hr/>
-    <table cellspacing="15">
+    <table cellspacing="30">
          <thead>
             <tr>
                <th>Airline</th>
@@ -29,11 +29,11 @@
          <tbody>
             <tr>
                <td>SpiceJet</td>
-               <td>2020-04-23</td>
-               <td>13:10</td>
+               <td>Evening</td>
                <td>Delhi</td>
-               <td>Guwahati</td>
+               <td>Chennai</td>
                <td>4</td>
+               <td>Economy</td>
                <td>08h50m</td>
                <td>5</td>
                <td>4378</td>
@@ -41,7 +41,7 @@
          </tbody>
       </table>
 
-      <form action="{{ url_for('add_record') }}" method=post class=add-record>
+      <form action="{{ url_for('predict_price') }}" method=post class=add-record>
       <dl>
         <input type=text size=15 name=airline placeholder="Airline">
         <input type=text size=15 name=depart_time placeholder="Departure Time">
