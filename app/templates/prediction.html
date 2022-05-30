@@ -6,17 +6,15 @@
 </head>
 
 <body>
-    <h3>
-         <a href = "{{ url_for('index') }}">Price Predictions</a>
-    </h3>
+
 
     <hr/>
     <table>
          <thead>
             <tr>
-               <th>Title</th>
-               <th>Artist</th>
-               <th>Album</th>
+               <th>Days Left</th>
+               <th>Price</th>
+
             </tr>
          </thead>
 
@@ -29,14 +27,8 @@
             {% endfor %}
          </tbody>
       </table>
-      <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
-      <dl>
-        <input type=text size=15 name=title placeholder="Title">
-        <input type=text size=15 name=artist placeholder="Artist">
-        <input type=text size=15 name=album placeholder="Album">
-        <input type=submit value=Add>
-      </dl>
-    </form>
-
+      <h3>
+         <a href = "{{ url_for('index') }}">Main Page</a>
+      </h3>
 </body>
 </html>

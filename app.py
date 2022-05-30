@@ -1,17 +1,12 @@
 import logging.config
-import sqlite3
-import traceback
 
 import joblib
-import numpy as np
-import sqlalchemy.exc
-
 from flask import Flask, render_template, request, redirect, url_for
-from src.app_util import count_down
 
+from src.app_util import count_down
 # For setting up the Flask-SQLAlchemy database session
 # from src.ex_add_songs import Tracks, TrackManager
-from src.sql_util import UserRecords, RecordManager
+from src.sql_util import RecordManager, ModelOutputs
 
 # Initialize the Flask application
 app = Flask(__name__, template_folder="app/templates",
@@ -41,9 +36,17 @@ encoder = joblib.load('models/encoder.joblib')
 model = joblib.load('models/model.joblib')
 
 print(app.config["SQLALCHEMY_DATABASE_URI"])
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/prediction/<record_id>')
+def show_prediction(record_id):
+    outputs = record_manager.session.query(ModelOutputs).filter(ModelOutputs.record_id == record_id)
+    return render_template('prediction.html', outputs=outputs)
 
 
 @app.route('/predict', methods=['POST'])
@@ -80,7 +83,7 @@ def predict_price():
     output = model.predict(model_input)
     record_manager.add_all_output(record_id, int(days_left), output)
 
-    return redirect(url_for('index'))
+    return redirect(url_for('show_prediction', record_id=record_id))
 
 
 if __name__ == '__main__':

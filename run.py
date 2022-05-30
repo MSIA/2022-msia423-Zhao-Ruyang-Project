@@ -114,10 +114,14 @@ if __name__ == '__main__':
         rm = RandomForestRegressor(**model_param)
         try:
             train_and_save(rm, **train_config)
+        except FileNotFoundError as e:
+            logger.error('Invalid path provided in config.')
+            raise e
         except TypeError as e:
             logger.error('Unexpected keyword argument.')
             raise e
-        except Exception as e:
+        except ValueError as e:
+            logger.error('Check dimensions of X_train, y_train.')
             raise e
         else:
             logger.info('Successfully trained and saved the RandomForest model.')
@@ -134,7 +138,8 @@ if __name__ == '__main__':
         except TypeError as e:
             logger.error('Unexpected keyword argument.')
             raise e
-        except Exception as e:
+        except FileNotFoundError as e:
+            logger.error('Invalid path provided in config.')
             raise e
         else:
             logger.info('Successfully saved the price predictions.')
@@ -151,3 +156,11 @@ if __name__ == '__main__':
         except TypeError as e:
             logger.error('Unexpected keyword argument.')
             raise e
+        except FileNotFoundError as e:
+            logger.error('Invalid path provided in config.')
+            raise e
+        except ValueError as e:
+            logger.error('Check dimensions of labels and predictions.')
+            raise e
+        else:
+            logger.info('Successfully saved the price prediction evaluations')
