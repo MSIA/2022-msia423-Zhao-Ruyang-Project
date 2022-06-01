@@ -1,3 +1,0 @@
-MSE of price predictions: 8152062.220313804
-MAE of price predictions: 1114.7029213925414
-MAPE of price predictions: 0.06974834081896199
