@@ -9,10 +9,11 @@ __pycache__/
 
 
 data/*
-!data/sample/
-!data/external/
-!data/raw/
+!data/clean/.gitkeep
 config/local/*
 models/*
 evaluations/*
 !.gitkeep
+!data/sample/
+!data/external/
+!data/raw/
