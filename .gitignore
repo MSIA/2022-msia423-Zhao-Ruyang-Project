@@ -12,7 +12,7 @@ data/*
 !data/sample/
 !data/external/
 !data/raw/
-!.gitkeep
+#!.gitkeep
 #!data/clean/.gitkeep
 config/local/*
 models/*
