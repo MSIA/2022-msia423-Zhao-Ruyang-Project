@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     parser.add_argument('step',
                         default='acquire_data',
-                        help='Which step to run',
+                        help='Choose which step to run',
                         choices=['acquire_data', 'preprocess', 'generate_feature',
                                  'train', 'score', 'evaluate'])
 
@@ -28,10 +28,13 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    with open(args.config, "r") as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
-
-    logger.info("Configuration file loaded from %s" % args.config)
+    try:
+        with open(args.config, "r") as f:
+            config = yaml.load(f, Loader=yaml.FullLoader)
+    except FileNotFoundError as e:
+        logger.error('Path %s does not exist.', args.config)
+    else:
+        logger.info("Successfully loaded configuration file from %s", args.config)
 
     if args.step == 'preprocess':
         try:
