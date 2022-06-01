@@ -7,11 +7,11 @@ __pycache__/
 .log
 .ipynb_checkpoints/
 
-data/*
-!data/sample/
-!data/external/
-!data/raw/
-
+data/tracks.db
+data/clean/*
+data/train/*
+data/test/*
+data/predictions/*
 config/local/*
 models/*
 evaluations/*
