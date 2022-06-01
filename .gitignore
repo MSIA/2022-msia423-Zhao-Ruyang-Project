@@ -13,4 +13,6 @@ data/*
 !data/external/
 !data/raw/
 config/local/*
+models/*
+evaluations/*
 !.gitkeep
