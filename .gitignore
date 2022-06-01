@@ -9,7 +9,6 @@ __pycache__/
 
 
 data/*
-!data/clean/.gitkeep
 !data/sample/
 !data/external/
 !data/raw/
