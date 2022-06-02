@@ -40,4 +40,4 @@ score:
 evaluate:
   prediction_path: 'data/predictions/prediction.npy'
   ytrue_path: 'data/test/y_test.npy'
-  save_path: 'evaluation/report.txt'
+  save_path: 'evaluations/report.txt'
