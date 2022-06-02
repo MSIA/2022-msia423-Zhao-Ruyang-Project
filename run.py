@@ -1,13 +1,15 @@
-import logging.config
 import argparse
-import yaml
-from src.preprocess_util import process_and_save
+import logging.config
+
 import pandas as pd
-from src.model_util import split_save, train_and_save
-from src.feature_generation_util import encode_and_save, extract_features
-from src.prediction_util import predict_and_save
-from src.evaluation_util import evaluate_and_save
+import yaml
 from sklearn.ensemble import RandomForestRegressor
+
+from src.evaluation_util import evaluate_and_save
+from src.feature_generation_util import encode_and_save, extract_features
+from src.model_util import split_save, train_and_save
+from src.prediction_util import predict_and_save
+from src.preprocess_util import process_and_save
 
 logging.config.fileConfig('config/logging/local.conf')
 logger = logging.getLogger('model-pipeline')
