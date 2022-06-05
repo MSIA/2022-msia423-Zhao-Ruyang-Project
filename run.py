@@ -16,7 +16,7 @@ logger = logging.getLogger('model-pipeline')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="pipeline for running cloud classification model")
+        description='pipeline for running cloud classification model')
 
     parser.add_argument('step',
                         default='acquire_data',
@@ -31,12 +31,12 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     try:
-        with open(args.config, "r") as f:
+        with open(args.config, 'r', encoding='utf-8') as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
     except FileNotFoundError as e:
         logger.error('Path %s does not exist.', args.config)
     else:
-        logger.info("Successfully loaded configuration file from %s", args.config)
+        logger.info('Successfully loaded configuration file from %s', args.config)
 
     if args.step == 'preprocess':
         try:
