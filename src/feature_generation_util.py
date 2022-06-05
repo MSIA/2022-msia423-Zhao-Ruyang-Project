@@ -1,5 +1,4 @@
 import logging
-import sys
 
 import joblib
 import numpy as np

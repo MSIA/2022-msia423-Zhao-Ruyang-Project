@@ -7,22 +7,22 @@ logger = logging.getLogger(__name__)
 
 
 def predict_and_save(model_path: str,
-                     X_test_path: str,
+                     x_test_path: str,
                      save_path: str) -> None:
     """Make predictions on a given test set with a given model, and save the predictions to specified path
 
     Args:
         model_path (str): path to load the model
-        X_test_path (str): path to load the test set
+        x_test_path (str): path to load the test set
         save_path (str): path to save the predictions
     """
     try:
-        X_test = np.load(X_test_path, allow_pickle=True)
+        x_test = np.load(x_test_path, allow_pickle=True)
     except FileNotFoundError as e:
-        logger.error('Path %s does not exist. Failed to load the test data.', X_test_path)
+        logger.error('Path %s does not exist. Failed to load the test data.', x_test_path)
         raise e
     else:
-        logger.info('Successfully loaded the test data from %s', X_test_path)
+        logger.info('Successfully loaded the test data from %s', x_test_path)
     try:
         model = joblib.load(model_path)
     except FileNotFoundError as e:
@@ -32,9 +32,9 @@ def predict_and_save(model_path: str,
         logger.info('Successfully loaded the model from %s', model_path)
 
     try:
-        y_pred = model.predict(X_test)
+        y_pred = model.predict(x_test)
     except ValueError as e:
-        logger.error('X_test does not have correct number of dimensions.')
+        logger.error('x_test does not have correct number of dimensions.')
         raise e
     else:
         logger.info('Successfully made the prediction.')
