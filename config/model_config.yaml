@@ -26,7 +26,7 @@ split_data:
   train_path: 'data/train'
   test_path: 'data/test'
 train:
-  X_train_path: 'data/train/X_train.npy'
+  x_train_path: 'data/train/X_train.npy'
   y_train_path: 'data/train/y_train.npy'
   save_path: 'models/model.joblib'
 model:
@@ -35,7 +35,7 @@ model:
   n_jobs: -1
 score:
   model_path: 'models/model.joblib'
-  X_test_path: 'data/test/X_test.npy'
+  x_test_path: 'data/test/X_test.npy'
   save_path: 'data/predictions/prediction.npy'
 evaluate:
   prediction_path: 'data/predictions/prediction.npy'
