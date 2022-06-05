@@ -7,7 +7,6 @@ __pycache__/
 .log
 .ipynb_checkpoints/
 
-data/tracks.db
 data/clean/*
 data/train/*
 data/test/*
