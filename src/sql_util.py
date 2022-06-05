@@ -99,7 +99,15 @@ class RecordManager:
     def get_ids(self):
         """Get all primary keys of the user_record table"""
         session = self.session
-        result = session.execute(select(UserRecords.id)).fetchall()
+        try:
+            result = session.execute(select(UserRecords.id)).fetchall()
+        except sqlalchemy.exc.OperationalError as e:
+            logger.error('Unable to get ids from user_records table. Check network.')
+            raise e
+        except sqlalchemy.exc.SQLAlchemyError as e:
+            logger.error('Unable to get ids from user_records table')
+            raise e
+
         ids = [row[0] for row in result]
         return ids
 
@@ -112,11 +120,11 @@ class RecordManager:
         return record_id
 
     def add_user(self,
-                 id: int,
+                 _id: int,
                  airline: str,
                  depart_time: str,
                  source: str,
-                 destination:str,
+                 destination: str,
                  stops: int,
                  flight_class: str,
                  duration: int,
@@ -126,7 +134,7 @@ class RecordManager:
         """Adds user record to the user_record table.
 
         Args:
-            id (int): primary key in the table
+            _id (int): primary key in the table
             airline (str): airline name
             depart_time (str): time of departure
             source (str): departure city name
@@ -141,7 +149,7 @@ class RecordManager:
         """
 
         session = self.session
-        user_record = UserRecords(id=id,
+        user_record = UserRecords(id=_id,
                                   airline=airline,
                                   departure_time=depart_time,
                                   source_city=source,
@@ -152,13 +160,18 @@ class RecordManager:
                                   days_left=days_left,
                                   cur_price=cur_price)
         session.add(user_record)
-        session.commit()
-        logger.info(f'One user record with price {cur_price} added to database.')
-        out = session.query(UserRecords).all()
-        logger.info(out)
+        try:
+            session.commit()
+        except sqlalchemy.exc.OperationalError as e:
+            logger.error('Unable to add user record to user_records table. Check network.')
+            raise e
+        except sqlalchemy.exc.SQLAlchemyError as e:
+            logger.error('Unable to add user record to user_records table')
+            raise e
+        else:
+            logger.info(f'One user record with price {cur_price} added to database.')
 
     def add_output(self,
-                   id: int,
                    record_id: int,
                    days_left: int,
                    price: int):
@@ -168,8 +181,16 @@ class RecordManager:
                                     days_left=days_left,
                                     price=price)
         session.add(model_output)
-        session.commit()
-        logger.info('Model output added to database.')
+        try:
+            session.commit()
+        except sqlalchemy.exc.OperationalError as e:
+            logger.error('Unable to add model output to model_outputs table. Check network.')
+            raise e
+        except sqlalchemy.exc.SQLAlchemyError as e:
+            logger.error('Unable to add model output to model_outputs table')
+            raise e
+        else:
+            logger.info(f'Added predicted price of {record_id} with {days_left} days left.')
 
     def add_all_output(self,
                        record_id: int,
@@ -181,8 +202,17 @@ class RecordManager:
                                         days_left=day,
                                         price=price_list[day])
             session.add(model_output)
-        session.commit()
-        logger.info('All model outputs added to database.')
+        try:
+            session.commit()
+        except sqlalchemy.exc.OperationalError as e:
+            logger.error('Unable to add all model outputs to model_outputs table')
+            raise e
+        except sqlalchemy.exc.SQLAlchemyError as e:
+            logger.error('Unable to add model outputs to model_outputs table')
+            raise e
+        else:
+            logger.info(f'All model outputs of {record_id} added to database.')
+
 
 def create_db(engine_string: str) -> None:
     """Create database with Tracks() data model from provided engine string.
@@ -195,16 +225,22 @@ def create_db(engine_string: str) -> None:
 
     """
     engine = sqlalchemy.create_engine(engine_string)
-
-    Base.metadata.create_all(engine)
-    logger.info("Tables successfully created in the database.")
+    try:
+        Base.metadata.create_all(engine)
+    except sqlalchemy.exc.ArgumentError as e:
+        logger.error('Could not parse URL from the engine string. %s', e)
+        raise e
+    except sqlalchemy.exc.OperationalError as e:
+        logger.error('Could not establish connection. Check engine string. %s', e)
+        raise e
+    else:
+        logger.info("The tables `user_records` and `model_outputs` are successfully created in the database.")
 
 if __name__ == '__main__':
-    # pass
-    engine_string = 'mysql+pymysql://rzx9163:AWS1998!@nw-msia423-rzx9163.ctarvegaqgdp.us-east-1.rds.amazonaws.com:3306/flight_db'
-    engine = sqlalchemy.create_engine(engine_string)
-    session_maker = sqlalchemy.orm.sessionmaker(bind=engine)
-    session = session_maker()
-    result = session.query(ModelOutputs).all()
-    for i in result:
-        print(i.record_id)
+    create_db('sqlite:///data/flight.dbd')
+    # engine = sqlalchemy.create_engine(engine_string)
+    # session_maker = sqlalchemy.orm.sessionmaker(bind=engine)
+    # session = session_maker()
+    # result = session.query(ModelOutputs).all()
+    # for i in result:
+    #     print(i.record_id)
