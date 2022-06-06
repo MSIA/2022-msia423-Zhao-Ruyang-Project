@@ -6,7 +6,7 @@ __pycache__/
 .idea/
 .log
 .ipynb_checkpoints/
-
+data/flight.db
 data/clean/*
 data/train/*
 data/test/*
