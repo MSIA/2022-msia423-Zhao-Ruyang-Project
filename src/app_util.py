@@ -1,7 +1,11 @@
 import numpy as np
 # from sklearn.compose import ColumnTransformer
 import logging
+import plotly
 
+import plotly.express as px
+import pandas as pd
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +62,37 @@ def time_of_day(time: str):
 
     return segment
 
+
+def plot_json(days: list[int], price: list[int]) -> str:
+    """Make a 2D line plot with x_axis reversed and min value annotated
+
+    Args:
+        days(:obj:`list` of `int`): a list of integers served as x of the plot
+        price(:obj:`list` of `int`): a list of integers served as y of the plot
+
+    Returns:
+        graph_pred(str): a string representation of a json object storing the plot
+    """
+    if len(days) != len(price):
+        logger.error('Length of the input lists are not equal.')
+        raise ValueError('Incompatible lists length')
+    df = pd.DataFrame({
+        'Days Left': days,
+        'Price': price
+    })
+    min_value = df['Price'].min()
+    max_days = df[df['Price'] == min_value]['Days Left'].values
+
+    fig = px.line(df, x='Days Left', y='Price', title='Forecast', markers=True)
+    for day in max_days:
+        fig.add_annotation(x=day,
+                           y=min_value,
+                           text=str(min_value))
+    fig.update_xaxes(autorange="reversed", tickformat='d')
+    graph_pred = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    logger.info('Successfully stored the graph in a json object.')
+
+    return graph_pred
 
 if __name__ == '__main__':
     list_in = ['a', 'b', 'not_number']
