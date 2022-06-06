@@ -1,16 +1,14 @@
 import logging.config
-import json
+
 import joblib
 from flask import Flask, render_template, request, redirect, url_for
 # import matplotlib.pyplot as plt
-from src.app_util import count_down, time_of_day
+from src.app_util import count_down, time_of_day, plot_json
 # For setting up the Flask-SQLAlchemy database session
 # from src.ex_add_songs import Tracks, TrackManager
 from src.sql_util import RecordManager, ModelOutputs
 import sqlalchemy
-import plotly
-import plotly.express as px
-import pandas as pd
+
 
 # Initialize the Flask application
 app = Flask(__name__, template_folder="app/templates",
@@ -39,8 +37,6 @@ record_manager = RecordManager(app)
 encoder = joblib.load('models/encoder.joblib')
 model = joblib.load('models/model.joblib')
 
-print(app.config["SQLALCHEMY_DATABASE_URI"])
-
 
 @app.route('/')
 def index():
@@ -53,15 +49,10 @@ def show_prediction(record_id):
     outputs = record_manager.session.query(ModelOutputs).filter(ModelOutputs.record_id == record_id)
     days = [output.days_left for output in outputs]
     price = [output.price for output in outputs]
-    df = pd.DataFrame({
-        'Days Left': days,
-        'Price': price
-    })
-    fig = px.line(df, x='Days Left', y='Price', title='Forecast', markers=True)
-    graph_pred = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    graph_pred = plot_json(days, price)
 
     return render_template('prediction.html', graphJSON=graph_pred, outputs=outputs)
-    # return render_template('prediction.html', outputs=outputs)
+
 
 @app.route('/predict', methods=['POST'])
 def predict_price():
@@ -81,16 +72,18 @@ def predict_price():
     cur_price = request.form['cur_price']
     model_input = [airline, source, time_of_day(depart_time), stops, destination, flight_class, duration, days_left]
     # Get a unique id for the user record
+    logger.info(model_input)
     try:
         record_id = record_manager.unique_id()
     except sqlalchemy.exc.OperationalError as e:
         logger.error('Unable to get ids from the user_records table. Check network.')
         logger.error(e)
-        return render_template('error.html', msg='Unable to access ids.')
+        return render_template('error.html', msg='Unable to connect to the database. Please check network.')
     # pri(
     except sqlalchemy.exc.SQLAlchemyError as e:
         logger.error('Unable to get ids from the user_records table')
         logger.error(e)
+        return render_template('error.html', msg='Unable to connect to the database.')
     else:
         logger.debug('Successfully get all id\'s from the user_records table.')
     # Add the user record to database
@@ -108,10 +101,11 @@ def predict_price():
     except sqlalchemy.exc.OperationalError as e:
         logger.error('Unable to add record with id %s to the user_records table. Check network.', record_id)
         logger.error(e)
-
+        return render_template('error.html', msg='Unable to access to the database. Please check network.')
     except sqlalchemy.exc.SQLAlchemyError as e:
         logger.error('Unable to add record with id %s to the user_records table.', record_id)
         logger.error(e)
+        return render_template('error.html', msg='Unable to access to the database.')
     else:
         logger.info('Successfully added record with id %s to the user_records table.', record_id)
 
@@ -123,6 +117,7 @@ def predict_price():
     except AttributeError as e:
         logger.error('Unable to onehot encode the model_input.')
         logger.error(e)
+        return render_template('error.html', msg='Unable to process the input. Check input.')
     else:
         logger.info('Successfully onehot encoded the model input for id %s', record_id)
         # Redirect to the error page
@@ -132,6 +127,7 @@ def predict_price():
     except ValueError as e:
         logger.error('Model_input does not have correct number of dimensions.')
         logger.error(e)
+        return render_template('error.html', msg='Unable to process the input. Check input.')
     else:
         logger.info('Successfully predicted prices for for id %s', record_id)
         logger.debug('There are %s predictions made.', len(model_input))
@@ -142,10 +138,12 @@ def predict_price():
         logger.error('Unable to add model output with id %s to the model_outputs table. '
                      'Check network.', record_id)
         logger.error(e)
+        return render_template('error.html', msg='Unable to access to the database. Please check network.')
     except sqlalchemy.exc.SQLAlchemyError as e:
         logger.error('Unable to add model output with id %s to the model_outputs table.',
                      record_id)
         logger.error(e)
+        return render_template('error.html', msg='Unable to access to the database.')
     else:
         logger.info('Successfully added price predictions for id %s to the model_outputs table.',
                     record_id)
