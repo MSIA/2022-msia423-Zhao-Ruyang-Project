@@ -1,6 +1,7 @@
-from src.app_util import count_down, time_of_day
 import numpy as np
 import pytest
+
+from src.app_util import count_down, time_of_day
 
 
 def test_count_down():
@@ -19,13 +20,13 @@ def test_count_down_index():
     with pytest.raises(IndexError):
         count_down(list_in, index_in)
 
+
 def test_count_down_nonint():
     """Test whether the count_down() function handles non-int string as expected."""
     list_in = ['a', 'b', 'not_number']
     index_in = 2
     with pytest.raises(ValueError):
         count_down(list_in, index_in)
-
 
 
 def test_time_of_day():
@@ -42,9 +43,9 @@ def test_time_of_day_unpack():
     with pytest.raises(ValueError):
         time_of_day(time_in)
 
+
 def test_time_of_day_nonint():
     """Test whether the time_of_day() function handles exception as expected."""
     time_in = 'a:15'
     with pytest.raises(ValueError):
         time_of_day(time_in)
-
