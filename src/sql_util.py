@@ -1,16 +1,15 @@
 """Creates, ingests data into, and enables querying of a table of
  songs for the PennyLane app to query from and display results to the user."""
-# mypy: plugins = sqlmypy, plugins = flasksqlamypy
 import logging.config
 import typing
 from random import randint
+
 import flask
 import sqlalchemy
 import sqlalchemy.orm
-from sqlalchemy.ext.declarative import declarative_base
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
-
+from sqlalchemy.ext.declarative import declarative_base
 
 logger = logging.getLogger(__name__)
 
@@ -18,9 +17,7 @@ Base: typing.Any = declarative_base()
 
 
 class UserRecords(Base):
-    """Creates a data model for the database to be set up for capturing user inputs.
-    """
-
+    """Creates a data model for the database to be set up for capturing user inputs."""
     __tablename__ = 'user_records'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -92,7 +89,6 @@ class RecordManager:
         """Closes SQLAlchemy session
 
         Returns: None
-
         """
         self.session.close()
 
@@ -174,8 +170,14 @@ class RecordManager:
     def add_output(self,
                    record_id: int,
                    days_left: int,
-                   price: int):
+                   price: int) -> None:
+        """Add a model output to the model_outputs table
 
+        Args:
+            record_id (int): the record_id of the model output
+            days_left (int): days left before departure
+            price (int): predicted price of the flight
+        """
         session = self.session
         model_output = ModelOutputs(record_id=record_id,
                                     days_left=days_left,
@@ -196,6 +198,14 @@ class RecordManager:
                        record_id: int,
                        days_left: int,
                        price_list: list):
+        """Add predicted prices of a flight from current day to last day
+
+        Args:
+            record_id (int): the record_id associated to the user record
+            days_left (int): days left before departure
+            price_list (`list` of `int`): list of predicted price for all days up to the departure day
+        """
+        # Get the db session
         session = self.session
         for day in range(days_left):
             model_output = ModelOutputs(record_id=record_id,
@@ -235,6 +245,7 @@ def create_db(engine_string: str) -> None:
         raise e
     else:
         logger.info("The tables `user_records` and `model_outputs` are successfully created in the database.")
+
 
 if __name__ == '__main__':
     create_db('sqlite:///data/flight.dbd')
