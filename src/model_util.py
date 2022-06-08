@@ -3,6 +3,7 @@ import logging
 import joblib
 import numpy as np
 import sklearn
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
 logger = logging.getLogger(__name__)
@@ -115,3 +116,38 @@ def train_and_save(model: sklearn.base.BaseEstimator,
         raise e
     else:
         logger.info('Successfully saved the model to %s', save_path)
+
+
+def train_model(config: dict) -> None:
+    try:
+        split_config = config['split_data']
+        train_config = config['train']
+        model_param = config['model']
+    except KeyError as e:
+        logger.error('Key not found.')
+        raise e
+
+    try:
+        split_save(**split_config)
+    except TypeError as e:
+        logger.error('Unexpected keyword argument.')
+        raise e
+    except Exception as e:
+        raise e
+    else:
+        logger.info('Successfully split the data into train and test.')
+
+    rm = RandomForestRegressor(**model_param)
+    try:
+        train_and_save(rm, **train_config)
+    except FileNotFoundError as e:
+        logger.error('Invalid path provided in config.')
+        raise e
+    except TypeError as e:
+        logger.error('Unexpected keyword argument.')
+        raise e
+    except ValueError as e:
+        logger.error('Check dimensions of X_train, y_train.')
+        raise e
+    else:
+        logger.info('Successfully trained and saved the RandomForest model.')

@@ -71,3 +71,20 @@ def process_and_save(df: pd.DataFrame,
         raise e
     else:
         logger.info('Successfully saved the processed data to %s', save_path)
+
+
+def preprocess_data(df: pd.DataFrame, config: dict) -> None:
+    try:
+        process_param = config['preprocess']['process_param']
+    except KeyError as e:
+        logger.error('Key not found.')
+        raise e
+    try:
+        process_and_save(df, **process_param)
+    except TypeError as e:
+        logger.error('Unexpected keyword argument.')
+        raise e
+    except Exception as e:
+        raise e
+    else:
+        logger.info('Successfully saved the cleaned data.')

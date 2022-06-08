@@ -47,3 +47,22 @@ def predict_and_save(model_path: str,
         raise e
     else:
         logger.info('Successfully saved the predictions to %s.', save_path)
+
+
+def score_model(config: dict) -> None:
+    try:
+        score_config = config['score']
+    except KeyError as e:
+        logger.error('Key not found.')
+        raise e
+
+    try:
+        predict_and_save(**score_config)
+    except TypeError as e:
+        logger.error('Unexpected keyword argument.')
+        raise e
+    except FileNotFoundError as e:
+        logger.error('Invalid path provided in config.')
+        raise e
+    else:
+        logger.info('Successfully saved the price predictions.')
