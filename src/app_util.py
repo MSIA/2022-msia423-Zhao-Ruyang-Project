@@ -1,11 +1,10 @@
-import numpy as np
-# from sklearn.compose import ColumnTransformer
-import logging
-import plotly
-
-import plotly.express as px
-import pandas as pd
 import json
+import logging
+
+import numpy as np
+import pandas as pd
+import plotly
+import plotly.express as px
 
 logger = logging.getLogger(__name__)
 
@@ -94,19 +93,19 @@ def plot_json(days: list[int], price: list[int]) -> str:
 
     return graph_pred
 
+
 if __name__ == '__main__':
     list_in = ['a', 'b', 'not_number']
     index_in = 2
     count_down(list_in, index_in)
-    import joblib
     # a = count_down([1, 1, 2, 1, 1, 1, 1, 15])
     # print(a)
     # print(np.array([['1', 1, 2, 1, 1, 1, 1, 15]]).astype('float'))
     # print(['a', 1, 2, 1, 1, 1, 1, 15])
- #    encoder = joblib.load('models/encoder.joblib')
- #    input = np.array([['SpiceJet', 'Delhi', 'Afternoon', '2', 'Chennai', 'Economy', '8.5', '0'],
- # ['SpiceJet', 'Delhi', 'Afternoon', '2', 'Chennai', 'Economy', '8.5', '1'],
- # ['SpiceJet', 'Delhi', 'Afternoon', '2', 'Chennai', 'Economy', '8.5', '2']])
- #    print(input)
- #    res = encoder.transform(input)
- #    # print(res)
+#    encoder = joblib.load('models/encoder.joblib')
+#    input = np.array([['SpiceJet', 'Delhi', 'Afternoon', '2', 'Chennai', 'Economy', '8.5', '0'],
+# ['SpiceJet', 'Delhi', 'Afternoon', '2', 'Chennai', 'Economy', '8.5', '1'],
+# ['SpiceJet', 'Delhi', 'Afternoon', '2', 'Chennai', 'Economy', '8.5', '2']])
+#    print(input)
+#    res = encoder.transform(input)
+#    # print(res)
