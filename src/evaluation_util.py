@@ -53,3 +53,25 @@ def evaluate_and_save(prediction_path: str,
         raise e
     else:
         logger.info('Successfully saved the evaluation metrics to %s', save_path)
+
+
+def evaluate_model(config: dict) -> None:
+    try:
+        evaluate_config = config['evaluate']
+    except KeyError as e:
+        logger.error('Key not found.')
+        raise e
+
+    try:
+        evaluate_and_save(**evaluate_config)
+    except TypeError as e:
+        logger.error('Unexpected keyword argument.')
+        raise e
+    except FileNotFoundError as e:
+        logger.error('Invalid path provided in config.')
+        raise e
+    except ValueError as e:
+        logger.error('Check dimensions of labels and predictions.')
+        raise e
+    else:
+        logger.info('Successfully saved the price prediction evaluations')
