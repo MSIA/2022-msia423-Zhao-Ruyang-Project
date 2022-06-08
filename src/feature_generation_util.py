@@ -39,11 +39,6 @@ def extract_features(read_path: str, save_path: str, target_name: str, feature_n
         feature_set = set([])
     column_set = set(df.columns)
 
-    # print(target_set)
-    # print(column_set)
-    # print(target_set.issubset(column_set))
-    # print(feature_set)
-    # sys.exit()
     if not (target_set.issubset(column_set) and feature_set.issubset(column_set)):
         logger.error('The columns of the dataframe does not contain all the provided features and targets.')
         raise KeyError('Invalid key for the columns.')
@@ -115,3 +110,31 @@ def encode_and_save(read_path: str,
         raise e
     else:
         logger.info('Successfully saved the encoded features and encoder.')
+
+
+def generate_feature(config: dict) -> None:
+    try:
+        extract_config = config['generate_feature']['extract_features']
+        encode_config = config['generate_feature']['encode']
+    except KeyError as e:
+        logger.error('Key not found.')
+        raise e
+    try:
+        extract_features(**extract_config)
+    except TypeError as e:
+        logger.error('Unexpected keyword argument.')
+        raise e
+    except Exception as e:
+        raise e
+    else:
+        logger.info('Successfully saved the features and targets.')
+
+    try:
+        encode_and_save(**encode_config)
+    except TypeError as e:
+        logger.error('Unexpected keyword argument.')
+        raise e
+    except Exception as e:
+        raise e
+    else:
+        logger.info('Successfully saved the encoded data and the encoder.')
