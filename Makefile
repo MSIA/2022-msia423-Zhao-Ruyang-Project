@@ -17,13 +17,26 @@ clean-model:
 
 clean-all: clean-data clean-model
 
-.PHONY: image-model, image-app
+.PHONY: image-model, image-app, image-test
 image-app:
 	docker build -f dockerfiles/Dockerfile.app -t final-project-app .
 image-model:
 	docker build -f dockerfiles/Dockerfile -t final-project .
+image-test:
+	docker build -f dockerfiles/Dockerfile.test -t final-project-tests .
 
-.PHONY: model-pipeline, acquire-data, preprocess, generate-feature, train, score, evaluate
+.PHONY: model-pipeline
+model-pipeline: clean-all image-model get-clean generate-feature train score evaluate
+
+.PHONY: get-clean
+get-clean: acquire-data preprocess
+
+.PHONY: persist-s3, acquire-data, preprocess, generate-feature, train, score, evaluate
+persist-s3: data/raw/flight_data.csv
+	docker run --mount type=bind,source="$(shell pwd)",target=/app/ \
+		-e AWS_ACCESS_KEY_ID \
+		-e AWS_SECRET_ACCESS_KEY \
+		final-project run_s3.py
 
 data/raw/flight_data.csv: run_s3.py
 	docker run --mount type=bind,source="$(shell pwd)",target=/app/ \
@@ -52,14 +65,17 @@ evaluations/report.txt: data/predictions/prediction.npy data/test/y_test.npy
 	docker run --mount type=bind,source="$(shell pwd)",target=/app/ final-project run.py evaluate
 evaluate: evaluations/report.txt
 
-model-pipeline: clean-all image-model acquire-data preprocess generate-feature train score evaluate
 
-.PHONY: run-app
+
+.PHONY: run-app run-test
 run-app:
 	 docker run \
 	 --mount type=bind,source="$(shell pwd)",target=/app/ \
 	 -e SQLALCHEMY_DATABASE_URI \
 	 -p 5001:5001 final-project-app
+
+run-test:
+	docker run final-project-tests
 
 .PHONY: create-db
 create-db:
