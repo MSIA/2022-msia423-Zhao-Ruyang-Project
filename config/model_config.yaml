@@ -1,5 +1,5 @@
 preprocess:
-  read_path: 'data/raw/flight_data.csv'
+  read_path: 'data/download/flight_data.csv'
   process_param:
     column_to_modify: 'stops'
     column_to_drop: ["flight", "arrival_time"]

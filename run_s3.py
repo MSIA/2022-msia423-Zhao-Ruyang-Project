@@ -14,7 +14,7 @@ if __name__ == '__main__':
                         help='s3 data path to download or upload data')
     parser.add_argument('--upload_local_path', default='data/raw/flight_data.csv',
                         help='local data path to store or upload data')
-    parser.add_argument('--download_local_path', default='data/raw/flight_data.csv',
+    parser.add_argument('--download_local_path', default='data/download/flight_data.csv',
                         help='local data path to store or upload data')
     args = parser.parse_args()
 
