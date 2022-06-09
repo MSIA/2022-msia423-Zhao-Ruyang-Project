@@ -130,14 +130,14 @@ You need to define an environment variable call `SQLALCHEMY_DATABASE_URI` to cre
 export SQLALCHEMY_DATABASE_URI = "YOUR_DATABASE_URI"
 ```
 ## Docker
-###Images
+### Images
 
 The project needs three docker images to execute the python files
 1. Dockerfile: to run all steps related to training the model 
 2. Dockerfile.app: to run the web app
 3. Dockerfile.test: to run tests for eligible functions used in the project
 
-###Build Images
+### Build Images
 Run following commands to build the above images
 ```bash
 make image-model
