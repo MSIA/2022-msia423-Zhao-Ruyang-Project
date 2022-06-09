@@ -9,6 +9,6 @@ RUN pip3 install -r requirements.txt
 
 COPY . /app
 
-EXPOSE 5000
+EXPOSE 5001
 
 CMD ["python3", "app.py"]

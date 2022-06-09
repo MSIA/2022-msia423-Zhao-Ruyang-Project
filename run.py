@@ -1,45 +1,71 @@
-"""Configures the subparsers for receiving command line arguments for each
- stage in the model pipeline and orchestrates their execution."""
 import argparse
 import logging.config
 
-from config.flaskconfig import SQLALCHEMY_DATABASE_URI
-from src.add_songs import create_db, add_song
+import pandas as pd
+import yaml
+
+from src.evaluation_util import evaluate_model
+from src.feature_generation_util import generate_feature
+from src.model_util import train_model
+from src.prediction_util import score_model
+from src.preprocess_util import preprocess_data
 
 logging.config.fileConfig('config/logging/local.conf')
-logger = logging.getLogger('penny-lane-pipeline')
+logger = logging.getLogger('model-pipeline')
 
 if __name__ == '__main__':
-
-    # Add parsers for both creating a database and adding songs to it
     parser = argparse.ArgumentParser(
-        description="Create and/or add data to database")
-    subparsers = parser.add_subparsers(dest='subparser_name')
+        description='pipeline for running cloud classification model')
 
-    # Sub-parser for creating a database
-    sp_create = subparsers.add_parser("create_db",
-                                      description="Create database")
-    sp_create.add_argument("--engine_string", default=SQLALCHEMY_DATABASE_URI,
-                           help="SQLAlchemy connection URI for database")
+    parser.add_argument('step',
+                        default='acquire_data',
+                        help='Choose which step to run',
+                        choices=['acquire_data', 'preprocess', 'generate_feature',
+                                 'train', 'score', 'evaluate'])
 
-    # Sub-parser for ingesting new data
-    sp_ingest = subparsers.add_parser("ingest",
-                                      description="Add data to database")
-    sp_ingest.add_argument("--artist", default="Emancipator",
-                           help="Artist of song to be added")
-    sp_ingest.add_argument("--title", default="Minor Cause",
-                           help="Title of song to be added")
-    sp_ingest.add_argument("--album", default="Dusk to Dawn",
-                           help="Album of song being added")
-    sp_ingest.add_argument("--engine_string",
-                           default='sqlite:///data/tracks.db',
-                           help="SQLAlchemy connection URI for database")
+    parser.add_argument('--config',
+                        default='config/model_config.yaml',
+                        help='Path to configuration file')
 
     args = parser.parse_args()
-    sp_used = args.subparser_name
-    if sp_used == 'create_db':
-        create_db(args.engine_string)
-    elif sp_used == 'ingest':
-        add_song(args)
+
+    try:
+        with open(args.config, 'r', encoding='utf-8') as f:
+            config = yaml.load(f, Loader=yaml.FullLoader)
+    except FileNotFoundError as e:
+        logger.error('Path %s does not exist.', args.config)
     else:
-        parser.print_help()
+        logger.info('Successfully loaded configuration file from %s', args.config)
+
+    if args.step == 'preprocess':
+        try:
+            read_path = config['preprocess']['read_path']
+        except KeyError as e:
+            logger.error('Key not found.')
+            raise e
+
+        try:
+            df = pd.read_csv(read_path, index_col=0)
+        except FileNotFoundError as e:
+            logger.error('Could not find data in %s', read_path)
+            raise e
+        except Exception as e:
+            logger.error('Failed to load data.')
+            logger.error(e)
+            raise e
+        else:
+            logger.info('Successfully read the data from %s', read_path)
+
+        preprocess_data(df, config)
+
+    if args.step == 'generate_feature':
+        generate_feature(config)
+
+    if args.step == 'train':
+        train_model(config)
+
+    if args.step == 'score':
+        score_model(config)
+
+    if args.step == 'evaluate':
+        evaluate_model(config)

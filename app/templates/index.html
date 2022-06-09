@@ -1,43 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link href="static/basic.css" rel="stylesheet">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <link href="static/basic.css" rel="stylesheet">
+    </head>
+    <body>
 
-<body>
     <h3>
-         <a href = "{{ url_for('index') }}">Penny Lane Music Recommender</a>
+         <a href = "{{ url_for('index') }}">Flight Ticket Price Prediction</a>
     </h3>
 
     <hr/>
-    <table>
-         <thead>
-            <tr>
-               <th>Title</th>
-               <th>Artist</th>
-               <th>Album</th>
-            </tr>
-         </thead>
+    <div class="row">
+        <div class="column">
+            <img src="https://www.freeiconspng.com/thumbs/airplane-icon-png/plane-icon-png-images--pictures--becuo-8.png" width=100>
+        </div>
+        <div class="column">
+            <table cellspacing="30">
+                 <thead>
+                    <tr>
+                       <th>Airline</th>
+                       <th>Departure_Time</th>
+                       <th>Source_City</th>
+                       <th>Destination</th>
+                       <th>#_Stops</th>
+                       <th>Flight_class</th>
+                       <th>Duration</th>
+                       <th>Days_Left</th>
+                       <th>Current_Price</th>
+                    </tr>
+                 </thead>
 
-         <tbody>
-            {% for track in tracks %}
-               <tr>
-                   <td>{{ track.title }}</td>
-                   <td>{{ track.artist }}</td>
-                   <td>{{ track.album }}</td>
-               </tr>
-            {% endfor %}
-         </tbody>
-      </table>
-      <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
-      <dl>
-        <input type=text size=15 name=title placeholder="Title">
-        <input type=text size=15 name=artist placeholder="Artist">
-        <input type=text size=15 name=album placeholder="Album">
-        <input type=submit value=Add>
-      </dl>
-    </form>
+                 <tbody>
+                    <tr>
+                       <td>SpiceJet</td>
+                       <td>07:00 PM</td>
+                       <td>Delhi</td>
+                       <td>Chennai</td>
+                       <td>4</td>
+                       <td>Economy</td>
+                       <td>8.5h</td>
+                       <td>5</td>
+                       <td>4378</td>
+                   </tr>
+                 </tbody>
+            </table>
+        </div>
+    </div>
 
-</body>
+    <div class="row">
+        <div class="column">
+            <form action="{{ url_for('predict_price') }}" method=post class=add-record>
+            <dl>
+                <label for=airlines>Airline:</label>
+                <select id=airlines name=airline>
+                <option value="AirAsia">AirAsia</option>
+                <option value="AirAsia">Air_India</option>
+                <option value="GO_FIRST">GO_FIRST</option>
+                <option value="Indigo">Indigo</option>
+                <option value="Vistara">Vistara</option>
+                <option value="SpiceJet">SpiceJet</option>
+                </select>
+                <br></br>
+                <label for=depart_time>Departure Time:</label>
+                <select id=depart_time name=depart_time>
+                    <option value="00:00">12:00 AM</option>
+                    <option value="00:30">12:30 AM</option>
+                    <option value="01:00">01:00 AM</option>
+                    <option value="01:30">01:30 AM</option>
+                    <option value="02:00">02:00 AM</option>
+                    <option value="02:30">02:30 AM</option>
+                    <option value="03:00">03:00 AM</option>
+                    <option value="03:30">03:30 AM</option>
+                    <option value="04:00">04:00 AM</option>
+                    <option value="04:30">04:30 AM</option>
+                    <option value="05:00">05:00 AM</option>
+                    <option value="05:30">05:30 AM</option>
+                    <option value="06:00">06:00 AM</option>
+                    <option value="06:30">06:30 AM</option>
+                    <option value="07:00">07:00 AM</option>
+                    <option value="07:30">07:30 AM</option>
+                    <option value="08:00">08:00 AM</option>
+                    <option value="08:30">08:30 AM</option>
+                    <option value="09:00">09:00 AM</option>
+                    <option value="09:30">09:30 AM</option>
+                    <option value="10:00">10:00 AM</option>
+                    <option value="10:30">10:30 AM</option>
+                    <option value="11:00">11:00 AM</option>
+                    <option value="11:30">11:30 AM</option>
+                    <option value="12:00">12:00 PM</option>
+                    <option value="12:30">12:30 PM</option>
+                    <option value="13:00">01:00 PM</option>
+                    <option value="13:30">01:30 PM</option>
+                    <option value="14:00">02:00 PM</option>
+                    <option value="14:30">02:30 PM</option>
+                    <option value="15:00">03:00 PM</option>
+                    <option value="15:30">03:30 PM</option>
+                    <option value="16:00">04:00 PM</option>
+                    <option value="16:30">04:30 PM</option>
+                    <option value="17:00">05:00 PM</option>
+                    <option value="17:30">05:30 PM</option>
+                    <option value="18:00">06:00 PM</option>
+                    <option value="18:30">06:30 PM</option>
+                    <option value="19:00" selected="">07:00 PM</option>
+                    <option value="19:30">07:30 PM</option>
+                    <option value="20:00">08:00 PM</option>
+                    <option value="20:30">08:30 PM</option>
+                    <option value="21:00">09:00 PM</option>
+                    <option value="21:30">09:30 PM</option>
+                    <option value="22:00">10:00 PM</option>
+                    <option value="22:30">10:30 PM</option>
+                    <option value="23:00">11:00 PM</option>
+                    <option value="23:30">11:30 PM</option>
+                </select>
+                <br></br>
+                <label for=source>Source City:</label>
+                <select id=source name=source>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai" selected="">Chennai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Kolkata">Kolkata</option>
+                </select>
+                <br></br>
+                <label for=destination>Destination City:</label>
+                <select id=destination name=destination>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Mumbai" selected="">Mumbai</option>
+                    <option value="Kolkata">Kolkata</option>
+                </select>
+                <br></br>
+                <label for=stops># Stops:</label>
+                <select id=stops name=stops>
+                    <option value="0">Zero</option>
+                    <option value="1">One</option>
+                    <option value="2">Two or More</option>
+                </select>
+                <br></br>
+                <label for=flight_class>Flight Class:</label>
+                <select id=flight_class name=flight_class>
+                    <option value="Economy" selected="">Economy</option>
+                    <option value="Business">Business</option>
+                </select>
+                <br></br>
+                <label for=duration>Duration(h):</label>
+                <input type=number id=duration name=duration min=0 max=50 placeholder="Duration in hour">
+                <br></br>
+                <label for=days_left>Days Left:</label>
+                <input type=number id=days_left name=days_left min=0 max=365 placeholder="Days Left">
+                <br></br>
+                <label for=cur_price>Current Price:</label>
+                <input type=number size=15 id= cur_price name=cur_price placeholder="Current Price">
+                <br></br>
+                <input type=submit value=Predict style="height:50px; width:200px; font-size:30px;">
+
+            </dl>
+            </form>
+        </div>
+        <div class="column">
+            <iframe src="https://www.google.com/maps/d/embed?mid=19XeFwJ7to_YTz2z-Agvg6YvhFKj4m0Y&ehbc=2E312F" width="640" height="480"></iframe>
+<!--            <img src="https://media.istockphoto.com/photos/flight-route-with-world-map-picture-id667632752?k=20&m=667632752&s=612x612&w=0&h=x4kqWqwi0U4kXu98AcFJ6cVzjHb_DvM8x3PtmeIZPbg=" width=600>-->
+        </div>
+    </div>
+    </body>
 </html>

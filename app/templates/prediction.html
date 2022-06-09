@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/static/basic.css" rel="stylesheet">
+</head>
+<body>
+  <h1>Go Find The Lowest Price!</h1>
+  <div id='chart' class='chart'”></div>
+
+<hr/>
+    <table>
+         <thead>
+            <tr>
+               <th>Days Left</th>
+               <th>Price</th>
+
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for output in outputs %}
+               <tr>
+                   <td>{{ output.days_left }}</td>
+                   <td>{{ output.price }}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      <h3>
+         <a href = "{{ url_for('index') }}">Main Page</a>
+      </h3>
+
+
+</body>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script type='text/javascript'>
+  var graphs = {{graphJSON | safe}};
+  Plotly.plot('chart', graphs, {});
+</script>
+</html>

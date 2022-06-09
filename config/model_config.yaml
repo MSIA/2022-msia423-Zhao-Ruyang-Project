@@ -1,0 +1,43 @@
+preprocess:
+  read_path: 'data/download/flight_data.csv'
+  process_param:
+    column_to_modify: 'stops'
+    column_to_drop: ["flight", "arrival_time"]
+    lookup_map:
+      zero: 0
+      one: 1
+      two_or_more: 2
+    save_path: 'data/clean/clean_data.csv'
+generate_feature:
+  extract_features:
+    read_path: 'data/clean/clean_data.csv'
+    save_path: 'data/clean'
+    target_name: 'price'
+  encode:
+    read_path: 'data/clean/features.csv'
+    encoded_path: 'data/clean/features.npy'
+    encoder_path: 'models/encoder.joblib'
+    features: ['airline', 'source_city', 'departure_time', 'destination_city', 'class']
+split_data:
+  feature_path: 'data/clean/features.npy'
+  target_path: 'data/clean/target.npy'
+  test_size: 0.1
+  random_state: 123
+  train_path: 'data/train'
+  test_path: 'data/test'
+train:
+  x_train_path: 'data/train/X_train.npy'
+  y_train_path: 'data/train/y_train.npy'
+  save_path: 'models/model.joblib'
+model:
+  n_estimators: 30
+  random_state: 123
+  n_jobs: -1
+score:
+  model_path: 'models/model.joblib'
+  x_test_path: 'data/test/X_test.npy'
+  save_path: 'data/predictions/prediction.npy'
+evaluate:
+  prediction_path: 'data/predictions/prediction.npy'
+  ytrue_path: 'data/test/y_test.npy'
+  save_path: 'evaluations/report.txt'

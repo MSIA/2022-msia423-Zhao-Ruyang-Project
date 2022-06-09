@@ -1,8 +1,40 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,600);
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display: flex;
+  margin-left:-5px;
+  margin-right:40px;
+}
+
+.column {
+  flex: 40%;
+  padding: 5px;
+}
 
 body {
   height: 100%;
   -webkit-font-smoothing: antialiased;
   font-family: 'Open Sans', sans-serif;
   background-color:#cdced8;
+}
+
+label {
+    width: 240px;
+    display:inline-block;
+}
+
+input {
+    width: 150px;
+    height: 18px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+select {
+  width: 150px;
+  height: 18px
+  font-size: 14px;
+  border-radius: 4px;
 }
