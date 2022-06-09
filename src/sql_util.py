@@ -47,7 +47,6 @@ class UserRecords(Base):
 class ModelOutputs(Base):
     """Creates a data model for the database to be set up for capturing model outputs.
     """
-
     __tablename__ = 'model_outputs'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
@@ -71,7 +70,6 @@ class RecordManager:
         engine_string (str): SQLAlchemy engine string specifying which database
             to write to. Follows the format
     """
-
     def __init__(self, app: typing.Optional[flask.app.Flask] = None,
                  engine_string: typing.Optional[str] = None):
         if app:
