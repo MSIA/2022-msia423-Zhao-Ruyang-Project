@@ -8,7 +8,7 @@
 * [Create Database ](#Create-Database)
 * [Running the app ](#Running-the-app)
     * [1. Configure Flask app ](#1-Configure-Flask-app)
-    * [2. Run the Flask app ](#Run-the-Flask-app)
+    * [2. Run the Flask app ](#2-Run-the-Flask-app)
 * [Testing](#Testing)
 * [Pylint](#Pylint)
 
@@ -235,7 +235,7 @@ if SQLALCHEMY_DATABASE_URI is None:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///data/flight.db' # URI (engine string) for database that contains relevant tables
 ```
 
-### Run the Flask app
+### 2. Run the Flask app
 
 To run the Flask app, run: 
 
