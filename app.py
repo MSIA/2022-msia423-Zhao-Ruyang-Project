@@ -8,24 +8,24 @@ from src.app_util import count_down, time_of_day, plot_json
 from src.sql_util import RecordManager, ModelOutputs
 
 # Initialize the Flask application
-app = Flask(__name__, template_folder="app/templates",
-            static_folder="app/static")
+app = Flask(__name__, template_folder='app/templates',
+            static_folder='app/static')
 
 # Configure flask app from flask_config.py
 app.config.from_pyfile('config/flaskconfig.py')
 
 # Define LOGGING_CONFIG in flask_config.py - path to config file for setting
 # up the logger (e.g. config/logging/local.conf)
-logging.config.fileConfig(app.config["LOGGING_CONFIG"])
-logger = logging.getLogger(app.config["APP_NAME"])
+logging.config.fileConfig(app.config['LOGGING_CONFIG'])
+logger = logging.getLogger(app.config['APP_NAME'])
 logger.debug(
     'Web app should be viewable at %s:%s if docker run command maps local '
     'port to the same port as configured for the Docker container '
     'in config/flaskconfig.py (e.g. `-p 5001:5001`). Otherwise, go to the '
     'port defined on the left side of the port mapping '
     '(`i.e. -p THISPORT:5000`). If you are running from a Windows machine, '
-    'go to 127.0.0.1 instead of 0.0.0.0.', app.config["HOST"]
-    , app.config["PORT"])
+    'go to 127.0.0.1 instead of 0.0.0.0.', app.config['HOST']
+    , app.config['PORT'])
 
 # Initialize the database session
 record_manager = RecordManager(app)
@@ -37,12 +37,24 @@ model = joblib.load('models/model.joblib')
 
 @app.route('/')
 def index():
-    # pr(
+    """The main page to show when the app started
+
+    Returns:
+        renders the index page
+    """
     return render_template('index.html')
 
 
 @app.route('/prediction/<record_id>')
-def show_prediction(record_id):
+def show_prediction(record_id: int):
+    """ Showing the prediction page with prediction results
+
+    Args:
+        record_id (int): the record_id of which the predictions will show
+
+    Returns:
+        renders the prediction page
+    """
     outputs = record_manager.session.query(ModelOutputs).filter(ModelOutputs.record_id == record_id)
     days = [output.days_left for output in outputs]
     price = [output.price for output in outputs]
@@ -56,7 +68,7 @@ def predict_price():
     """View that process a POST with new user input
 
     Returns:
-        redirect to index page
+        redirect to prediction page
     """
     airline = request.form['airline']
     source = request.form['source']
@@ -128,6 +140,7 @@ def predict_price():
     else:
         logger.info('Successfully predicted prices for for id %s', record_id)
         logger.debug('There are %s predictions made.', len(model_input))
+
     # Add model outputs to database
     try:
         record_manager.add_all_output(record_id, int(days_left), output)
@@ -149,5 +162,6 @@ def predict_price():
 
 
 if __name__ == '__main__':
-    app.run(debug=app.config["DEBUG"], port=app.config["PORT"],
-            host=app.config["HOST"])
+    # Start the app
+    app.run(debug=app.config['DEBUG'], port=app.config['PORT'],
+            host=app.config['HOST'])

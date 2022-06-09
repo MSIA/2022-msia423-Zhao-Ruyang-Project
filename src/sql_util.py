@@ -106,7 +106,11 @@ class RecordManager:
         return ids
 
     def unique_id(self):
-        """Generate an id that does not exist in the user_record table"""
+        """Generate an id that does not exist in the user_record table
+
+        Returns:
+            record_id (int): a unique record_id not used yet
+        """
         existing_ids = self.get_ids()
         record_id = randint(1, 10000)
         while record_id in existing_ids:
@@ -246,10 +250,10 @@ def create_db(engine_string: str) -> None:
 
 
 if __name__ == '__main__':
-    create_db('sqlite:///data/flight.dbd')
-    # engine = sqlalchemy.create_engine(engine_string)
-    # session_maker = sqlalchemy.orm.sessionmaker(bind=engine)
-    # session = session_maker()
-    # result = session.query(ModelOutputs).all()
-    # for i in result:
-    #     print(i.record_id)
+    # create_db('sqlite:///data/flight.dbd')
+    engine = sqlalchemy.create_engine('mysql+pymysql://msia423instructor:rzx9163@nw-msia423-rzx9163.ctarvegaqgdp.us-east-1.rds.amazonaws.com:3306/flight_db')
+    session_maker = sqlalchemy.orm.sessionmaker(bind=engine)
+    session = session_maker()
+    result = session.query(ModelOutputs).all()
+    for i in result:
+        print(i.record_id)
