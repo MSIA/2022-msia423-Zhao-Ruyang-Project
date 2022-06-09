@@ -7,7 +7,7 @@
 * [Model](#Model)
 * [Create Database ](#Create-Database)
 * [Running the app ](#Running-the-app)
-    * [1. Configure Flask app ](#Configure-Flask-app)
+    * [1. Configure Flask app ](#1-Configure-Flask-app)
     * [2. Run the Flask app ](#Run-the-Flask-app)
 * [Testing](#Testing)
 * [Pylint](#Pylint)
@@ -217,7 +217,7 @@ Before running the app, make sure you have completed the following:
 3. Run the entire model pipeline either by `make model-pipeline` or executing each step sequentially with the corresponding `make` command. 
 4. Create the relevant tables in the database connected via your `SQLALCHEMY_DATABASE_URI` environment variable . This can be done by running `make create-db`. 
 
-### Configure Flask app
+### 1. Configure Flask app
 `config/flaskconfig.py` holds the configurations for the Flask app. It includes the following configurations:
 
 ```python
