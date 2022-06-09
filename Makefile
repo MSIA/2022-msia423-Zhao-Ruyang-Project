@@ -74,8 +74,6 @@ evaluations/report.txt: data/predictions/prediction.npy data/test/y_test.npy
 	docker run --mount type=bind,source="$(shell pwd)",target=/app/ final-project run.py evaluate
 evaluate: evaluations/report.txt
 
-
-
 .PHONY: run-app run-test
 run-app:
 	 docker run \
