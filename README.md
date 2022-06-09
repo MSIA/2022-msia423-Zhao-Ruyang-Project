@@ -2,10 +2,10 @@
 
 # Table of Contents
 * [Project charter ](#Project-charter)
-* [Environment Setup](#Environment Setup)
+* [Environment Setup ](#Environment Setup)
 * [Docker](#Docker)
 * [Model](#Model)
-* [Create Database](#Create Database)
+* [Create Database ](#Create Database)
 * [Running the app ](#Running-the-app)
     * [1. Configure Flask app ](#1.-Configure-Flask-app)
     * [2. Run the Flask app ](#2.-Run-the-Flask-app)
