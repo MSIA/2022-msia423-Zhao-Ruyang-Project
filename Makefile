@@ -18,13 +18,15 @@ clean-model:
 
 clean-all: clean-data clean-model
 
-.PHONY: image-model, image-app, image-test
-image-app:
-	docker build -f dockerfiles/Dockerfile.app -t final-project-app .
+.PHONY: image-model, image-app, image-test, image-pylint
 image-model:
 	docker build -f dockerfiles/Dockerfile -t final-project .
+image-app:
+	docker build -f dockerfiles/Dockerfile.app -t final-project-app .
 image-test:
 	docker build -f dockerfiles/Dockerfile.test -t final-project-tests .
+image-pylint:
+	docker build -f dockerfiles/Dockerfile.pylint -t final-project-pylint .
 
 .PHONY: create-db
 create-db:
