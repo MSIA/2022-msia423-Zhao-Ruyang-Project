@@ -2,7 +2,7 @@
 
 # Table of Contents
 * [Project charter ](#Project-charter)
-* [Environment Setup ](#Environment Setup)
+* [Environment Setup ](#Environment-Setup)
 * [Docker](#Docker)
 * [Model](#Model)
 * [Create Database ](#Create-Database)
