@@ -2,12 +2,14 @@
 
 # Table of Contents
 * [Project charter ](#Project-charter)
+* [Environment Setup](#Environment Setup)
+* [Docker](#Docker)
+* [Model](#Model)
+* [Create Database](#Create Database)
 * [Running the app ](#Running-the-app)
-	* [1. Initialize the database ](#1.-Initialize-the-database)
-	* [2. Configure Flask app ](#2.-Configure-Flask-app)
-	* [3. Run the Flask app ](#3.-Run-the-Flask-app)
+    * [1. Configure Flask app ](#1.-Configure-Flask-app)
+    * [2. Run the Flask app ](#2.-Run-the-Flask-app)
 * [Testing](#Testing)
-* [Mypy](#Mypy)
 * [Pylint](#Pylint)
 
 
