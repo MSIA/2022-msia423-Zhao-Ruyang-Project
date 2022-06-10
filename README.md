@@ -1,4 +1,4 @@
-# MSiA423 Template Repository
+# Flight Ticket Price Forecast
 
 # Table of Contents
 * [Project charter ](#Project-charter)
