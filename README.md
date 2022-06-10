@@ -54,7 +54,7 @@ The app could be considered successful if month one retention surpass 50%, and a
 │   ├── static/                       <- CSS, JS files that remain static
 │   ├── basic.css    			  	  <- CSS file to set the style for html pages
 ├── templates/                    	  <- HTML (or other code) that is templated and changes based on a set of inputs│    
-│	├── error.html				      <- Rrror page template
+│	├── error.html				      <- Error page template
 │	├── index.html				      <- Index page template
 │	├── prediciton.html			      <- prediction page template
 ├── config                            <- Directory for configuration files 
